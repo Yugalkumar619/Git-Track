@@ -24,6 +24,7 @@ import com.example.gittrack.models.Repo
 import com.example.gittrack.viewmodel.MainVModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontFamily
 import com.example.gittrack.R
 
@@ -91,7 +92,7 @@ fun ActionBar(navController: NavController){
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .background(color = Color.LightGray),
+            .background(color = Color.LightGray).shadow(8.dp),
         contentAlignment = Alignment.Center,
         ) {
 
