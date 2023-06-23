@@ -1,6 +1,7 @@
 package com.example.gittrack
 
-import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -18,17 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.gittrack.data.remote.RepoService
-import com.example.gittrack.data.remote.RetrofitHelper
-import com.example.gittrack.data.repository.RepoRepository
 import com.example.gittrack.models.Repo
 import com.example.gittrack.ui.theme.GitTrackTheme
 import com.example.gittrack.viewmodel.MainVModel
-import com.example.gittrack.viewmodel.MainVModelFactory
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -48,11 +45,14 @@ class MainActivity : ComponentActivity() {
         Log.d("YUGALKUMAR","BEFORE")
 
         mainViewModel.repo.observe(this, Observer{
-            Log.d("YUGALKUMAR", it.name)
-            Log.d("YUGALKUMAR", it.description)
-            Log.d("YUGALKUMAR", it.url)
             Toast.makeText(this, mainViewModel.repository.repo.value?.name, Toast.LENGTH_SHORT).show()
 
+        })
+
+        mainViewModel.item.observe(this, Observer {
+            Toast.makeText(this, mainViewModel.item.value?.name, Toast.LENGTH_SHORT).show()
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(mainViewModel.item.value?.html_url))
+            startActivity(browserIntent)
         })
         Log.d("YUGALKUMAR","AFTER")
 
@@ -64,35 +64,6 @@ class MainActivity : ComponentActivity() {
                 SetupNavGraph(navController = navController, mainViewModel = mainViewModel)
 
 
-
-//                // A surface container using the 'background' color from the theme
-//                val viewModel = hiltViewModel<MainViewModel>()
-//                val context = LocalContext.current
-//
-//                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-//
-//
-//                    val gitState by viewModel.userState.collectAsState()
-//                    when(gitState){
-//                        is GitState.LoadState->{
-//                            Box(
-//                                modifier = Modifier.fillMaxSize(),
-//                            contentAlignment = Alignment.Center
-//                            ){
-//                                CircularProgressIndicator()
-//                            }
-//                        }
-//                        is GitState.Success->{
-//                            val repo = (gitState as GitState.Success).users
-//                            RepoListView(repo)
-//                        }
-//                        is GitState.Error->{
-//                            val message = (gitState as GitState.Error).errorMessage
-//                            Toast.makeText(context,message, Toast.LENGTH_SHORT).show()
-//                        }
-//                        else -> {}
-//                    }
-//                }
             }
         }
     }
@@ -120,7 +91,8 @@ fun UserItem(repo: Repo){
             .size(50.dp)
             .background(Color.White, CircleShape)
         ){
-            Text(modifier = Modifier.padding(10.dp),
+            Text(
+                modifier = Modifier.padding(10.dp),
 
                 text = repo.name.substring(0, 1),
                 color = Color.Red,

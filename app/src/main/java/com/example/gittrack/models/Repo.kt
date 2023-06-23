@@ -12,5 +12,5 @@ data class Repo(
 
     val name: String,
     val description: String,
-    val url: String
+    val html_url: String
     )

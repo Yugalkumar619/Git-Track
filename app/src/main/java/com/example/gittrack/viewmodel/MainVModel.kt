@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gittrack.MainActivity
@@ -25,10 +26,16 @@ class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(
      var repoName: String = ""
      var url: String = "/repos/"
 
+    private val repoLiveData = MutableLiveData<Repo>()
+
+    val item: MutableLiveData<Repo>
+        get() = repoLiveData
+
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getLocalRepo()
+
         }
     }
 
@@ -44,6 +51,10 @@ class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             repository.getRepo(url)
         }
+    }
+
+    fun itemClicked(itemp: Repo){
+        item.postValue(itemp)
     }
 
     val repo : LiveData<Repo>

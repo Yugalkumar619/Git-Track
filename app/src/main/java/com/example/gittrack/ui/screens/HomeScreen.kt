@@ -1,8 +1,5 @@
-package com.example.gittrack
+package com.example.gittrack.ui.screens
 
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,11 +10,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +22,8 @@ import androidx.navigation.NavController
 import com.example.gittrack.models.Repo
 import com.example.gittrack.viewmodel.MainVModel
 import androidx.compose.foundation.lazy.items
+import com.example.gittrack.R
+import com.example.gittrack.Screen
 
 @Composable
 fun HomeScreen(
@@ -109,7 +106,7 @@ fun DetailsContent(
         items(
            items = repos
         ) {
-            RepoCard(repo = it)
+            RepoCard(repo = it,mainVModel)
         }
     }
 }
@@ -117,11 +114,14 @@ fun DetailsContent(
 
 
 @Composable
-fun RepoCard(repo: Repo) {
+fun RepoCard(repo: Repo, mainVModel: MainVModel) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                      mainVModel.itemClicked(repo)
+            },
         elevation = 2.dp,
         backgroundColor = Color.LightGray,
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
@@ -147,7 +147,7 @@ fun RepoCard(repo: Repo) {
                     )
                 )
                 Text(
-                    text = "Link :- "+repo.url,
+                    text = "Link :- "+repo.html_url,
                     style = TextStyle(
                         color = Color.Black,
                         fontSize = 15.sp
