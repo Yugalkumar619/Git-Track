@@ -32,35 +32,38 @@ fun HomeScreen(
 ){
     Column {
 
-
         ActionBar(navController = navController)
 
         val repos by mainVModel.lRepo.observeAsState(initial = emptyList())
 
         if (repos.isEmpty()){
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-
-                Icon(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .size(140.dp)
-                        .clickable {
-                            navController.navigate(route = Screen.AddRepo.route)
-                        },
-
-                    painter = painterResource(R.drawable.add),
-                    contentDescription = "print"
-                )
-
-            }
-
-
+            EmptyData(navController = navController)
         }else{
             DetailsContent(mainVModel = mainVModel)
+        }
+    }
+}
+
+@Composable
+fun EmptyData(navController: NavController){
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        
+        Column(
+            Modifier.align(Alignment.Center)
+        ) {
+            Text(text = "Add a repository")
+            Icon(
+                modifier = Modifier
+                    .size(140.dp)
+                    .clickable {
+                        navController.navigate(route = Screen.AddRepo.route)
+                    },
+                painter = painterResource(R.drawable.add),
+                contentDescription = "print"
+            )
         }
 
     }
@@ -76,8 +79,8 @@ fun ActionBar(navController: NavController){
             .height(70.dp)
             .background(color = Color.LightGray),
         contentAlignment = Alignment.Center,
-
         ) {
+
         Icon(
             modifier = Modifier
                 .size(70.dp)
@@ -86,7 +89,6 @@ fun ActionBar(navController: NavController){
                 .clickable {
                     navController.navigate(route = Screen.AddRepo.route)
                 },
-
             painter = painterResource(R.drawable.add),
             contentDescription = "print"
         )
@@ -97,7 +99,7 @@ fun ActionBar(navController: NavController){
 fun DetailsContent(
     mainVModel: MainVModel
 ) {
-
+    
     val repos by mainVModel.lRepo.observeAsState(initial = emptyList())
 
     LazyColumn(
@@ -120,7 +122,7 @@ fun RepoCard(repo: Repo, mainVModel: MainVModel) {
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickable {
-                      mainVModel.itemClicked(repo)
+                mainVModel.itemClicked(repo)
             },
         elevation = 2.dp,
         backgroundColor = Color.LightGray,
@@ -141,21 +143,26 @@ fun RepoCard(repo: Repo, mainVModel: MainVModel) {
                 )
                 Text(
                     text = "Description :- "+repo.description,
+                    maxLines = 2,
                     style = TextStyle(
                         color = Color.Black,
-                        fontSize = 15.sp
-                    )
-                )
-                Text(
-                    text = "Link :- "+repo.html_url,
-                    style = TextStyle(
-                        color = Color.Black,
-                        fontSize = 15.sp
+                        fontSize = 15.sp,
                     )
                 )
 
 
             }
+
+            Icon(
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(5.dp)
+                    .clickable {
+                        mainVModel.shareClicked(repo)
+                    },
+                painter = painterResource(R.drawable.share),
+                contentDescription = "print"
+            )
         }
     }
 }

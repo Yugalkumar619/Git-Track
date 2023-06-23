@@ -27,9 +27,13 @@ class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(
      var url: String = "/repos/"
 
     private val repoLiveData = MutableLiveData<Repo>()
+    private val shareRepoLiveData = MutableLiveData<Repo>()
 
     val item: MutableLiveData<Repo>
         get() = repoLiveData
+
+    val shareItem: MutableLiveData<Repo>
+        get() = shareRepoLiveData
 
 
     init {
@@ -53,8 +57,12 @@ class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(
         }
     }
 
-    fun itemClicked(itemp: Repo){
-        item.postValue(itemp)
+    fun itemClicked(item: Repo){
+        this.item.postValue(item)
+    }
+
+    fun shareClicked(shareItem: Repo){
+        this.shareItem.postValue(shareItem)
     }
 
     val repo : LiveData<Repo>

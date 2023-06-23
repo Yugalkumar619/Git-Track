@@ -49,6 +49,23 @@ class MainActivity : ComponentActivity() {
 
         })
 
+
+        mainViewModel.shareItem.observe(this, Observer {
+            val sendIntent: Intent = Intent().apply {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, mainViewModel.shareItem.value!!.html_url)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, "Share repository via")
+                startActivity(shareIntent)
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        })
+
         mainViewModel.item.observe(this, Observer {
             Toast.makeText(this, mainViewModel.item.value?.name, Toast.LENGTH_SHORT).show()
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(mainViewModel.item.value?.html_url))
