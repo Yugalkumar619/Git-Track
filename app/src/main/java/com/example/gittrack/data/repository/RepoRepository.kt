@@ -22,7 +22,7 @@ class RepoRepository @Inject constructor(private val repoService: RepoService, p
 
 
     // Demo data if we are not able to get the response
-    val repodemo: Repo = Repo(1,"My name is Yugal","Living Legend","www.yugal-kumar.com")
+    val repodemo: Repo = Repo(1,"Please fill correct information","Living Legend","www.yugal-kumar.com")
 
     suspend fun getRepo(owner: String){
         var result: Repo
@@ -30,16 +30,26 @@ class RepoRepository @Inject constructor(private val repoService: RepoService, p
         try {
 
            result = repoService.getUsers(owner)
-            addRepo(result)
-            getLocalRepo()
+            val lR = repoDao.getRepo()
+
+            if (lR.contains(result)){
+
+                repo.postValue(Repo(0,"Repository already exist","www.yugal-kumar.com","www.yugal-kumar.com"))
+            }else{
+                addRepo(result)
+                getLocalRepo()
+                repoLiveData.postValue(result)
+            }
+
 
         }catch (e: Exception){
             Log.e("Network Error",e.message.toString())
             result = repodemo
             getLocalRepo()
+            repoLiveData.postValue(result)
         }
 
-        repoLiveData.postValue(result)
+
     }
 
     suspend  fun getLocalRepo(){

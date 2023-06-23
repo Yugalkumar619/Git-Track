@@ -1,138 +1,91 @@
-package com.example.gittrack
+package com.example.gittrack.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.gittrack.viewmodel.MainVModel
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddRepoScreen(
-    navController: NavController
-){
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-
-        
-        Text(
-            text = "Add Repo",
-            color = Color.Black,
-            fontSize = MaterialTheme.typography.h3.fontSize,
-            fontWeight = FontWeight.Bold
-        )
-        Button(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            onClick = {
-                navController.popBackStack()
-
-            }) {
-            Text(
-                color = Color.White,
-                text = "Add Repo",
-                fontSize = 20.sp)
-        }
-    }
-}
-
-@Composable
-fun Login(
-    navController: NavController
-){
-    Column (
-        Modifier
-            .padding(24.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.Bottom),
-            ){
-        Icon(painter = painterResource(id = R.drawable.add),
-            contentDescription = null,
-            Modifier.size(80.dp),
-            tint = Color.Blue
-        )
-
-        Button(onClick = {}, modifier = Modifier.fillMaxSize()) {
-            Text(text = "Add Repo", Modifier.padding(vertical = 8.dp))
-        }
-        Divider(color = Color.White.copy(alpha = 0.3f),
-        thickness = 1.dp,
-        modifier = Modifier.padding(top = 48.dp)
-        )
-        Row(verticalAlignment = Alignment.CenterVertically){
-            Text(text = "Add your favourite Repo", color = Color.Black)
-        }
-    }
-}
-
-@Composable
-fun TextInput(){
-     var value: String = ""
-    TextField(value = value, onValueChange = { value = it })
-}
-
-
-@Composable
-@Preview(showBackground = true)
-fun AddRepoScreenPreview(){
-    AddRepoScreen(navController = rememberNavController())
-}
-
-@Composable
-fun LoginPage(
     navController: NavHostController,
     mainViewModel: MainVModel
 ) {
 
     Column(
-        modifier = Modifier.padding(20.dp)
+        modifier = Modifier
+            .padding(10.dp, 80.dp, 10.dp, 20.dp)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         val ownername = remember { mutableStateOf(TextFieldValue()) }
         val reponame = remember { mutableStateOf(TextFieldValue()) }
+        var text by remember { mutableStateOf(TextFieldValue("Text")) }
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         Text(text = "Save Repository", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.background(Color.LightGray),
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
+            colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.LightGray,
+                    focusedIndicatorColor = Color.Green,
+                    cursorColor = Color.Black),
             label = {
-                Text(color = Color.Black, text = "Owner Name")
+                Text(color = Color.Black,
+                    text = "Owner Name")
                     },
             value = ownername.value,
-            onValueChange = { ownername.value = it })
+            onValueChange = { ownername.value = it },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.background(Color.LightGray),
-            label = { Text(color = Color.Black,text = "Repo Name") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.LightGray,
+                    focusedIndicatorColor = Color.Green,
+                    cursorColor = Color.Black),
+            label = { Text(color = Color.Black,text = "Repository Name") },
             value = reponame.value,
-            onValueChange = { reponame.value = it })
+            onValueChange = { reponame.value = it },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
@@ -154,4 +107,10 @@ fun LoginPage(
 
 
     }
+}
+
+@Preview
+@Composable
+fun SimpleComposablePreview() {
+    AddRepoScreen(rememberNavController(), viewModel())
 }

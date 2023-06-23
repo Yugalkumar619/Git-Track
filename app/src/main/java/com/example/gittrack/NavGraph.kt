@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.gittrack.ui.screens.AddRepoScreen
 import com.example.gittrack.ui.screens.HomeScreen
 import com.example.gittrack.viewmodel.MainVModel
 
@@ -24,7 +25,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.AddRepo.route
         ){
-            LoginPage(navController = navController, mainViewModel)
+            AddRepoScreen(navController = navController, mainViewModel)
         }
     }
 }

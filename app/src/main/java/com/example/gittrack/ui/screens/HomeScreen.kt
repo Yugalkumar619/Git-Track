@@ -1,5 +1,6 @@
 package com.example.gittrack.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,8 +23,13 @@ import androidx.navigation.NavController
 import com.example.gittrack.models.Repo
 import com.example.gittrack.viewmodel.MainVModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import com.example.gittrack.R
 import com.example.gittrack.Screen
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun HomeScreen(
@@ -50,13 +56,25 @@ fun EmptyData(navController: NavController){
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
+
         
         Column(
             Modifier.align(Alignment.Center)
         ) {
-            Text(text = "Add a repository")
+            Image(
+                painter = painterResource(id = R.drawable.cat),
+                contentDescription ="cat",
+            modifier = Modifier.size(250.dp).align(CenterHorizontally))
+            Text(
+                modifier = Modifier.padding(10.dp,0.dp,10.dp,30.dp),
+                text = "Add a repository",
+                style = TextStyle(
+                    fontSize = 35.sp,
+                    fontFamily = FontFamily.Serif
+                ))
             Icon(
                 modifier = Modifier
+                    .align(CenterHorizontally)
                     .size(140.dp)
                     .clickable {
                         navController.navigate(route = Screen.AddRepo.route)

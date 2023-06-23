@@ -39,13 +39,8 @@ class MainActivity : ComponentActivity() {
 
 
 
-
-
-
-        Log.d("YUGALKUMAR","BEFORE")
-
         mainViewModel.repo.observe(this, Observer{
-            Toast.makeText(this, mainViewModel.repository.repo.value?.name, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, mainViewModel.repository.repo.value?.name, Toast.LENGTH_LONG).show()
 
         })
 
@@ -71,7 +66,6 @@ class MainActivity : ComponentActivity() {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(mainViewModel.item.value?.html_url))
             startActivity(browserIntent)
         })
-        Log.d("YUGALKUMAR","AFTER")
 
 
         setContent {
