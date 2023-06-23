@@ -25,11 +25,7 @@ import com.example.gittrack.viewmodel.MainVModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import com.example.gittrack.R
-import com.example.gittrack.Screen
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun HomeScreen(

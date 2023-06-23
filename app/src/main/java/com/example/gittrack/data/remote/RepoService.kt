@@ -9,21 +9,8 @@ import retrofit2.http.Url
 
 interface RepoService{
 
-//    @GET("")
-//    suspend fun getRepo() : Response<Repo>
-
-//    @GET("/repos/martijn00/PhotoView")
-//    suspend fun fetchRepo(): Repo
-//
-//    @GET("{id}")
-//    suspend fun getRepo(@Path("id") groupId: String): Call<Repo?>?
-
+// Service class to call the API using dynamic URL
     @GET
     suspend fun getUsers(@Url url: String?): Repo
-
-
-//    @GET("/repos/martijn00/PhotoView")
-//    suspend fun fetchRepo(): Repo
-
 
 }

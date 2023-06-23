@@ -3,7 +3,6 @@ package com.example.gittrack
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +21,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.gittrack.models.Repo
+import com.example.gittrack.navigation.SetupNavGraph
 import com.example.gittrack.ui.theme.GitTrackTheme
 import com.example.gittrack.viewmodel.MainVModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,14 +39,14 @@ class MainActivity : ComponentActivity() {
 
 
 
+        // Show the different toast messages while there is any change in the data
         mainViewModel.repo.observe(this, Observer{
             Toast.makeText(this, mainViewModel.repository.repo.value?.name, Toast.LENGTH_LONG).show()
 
         })
 
-
+        // Share the repository between different apps while click the share button
         mainViewModel.shareItem.observe(this, Observer {
-            val sendIntent: Intent = Intent().apply {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, mainViewModel.shareItem.value!!.html_url)
@@ -55,19 +55,16 @@ class MainActivity : ComponentActivity() {
 
                 val shareIntent = Intent.createChooser(sendIntent, "Share repository via")
                 startActivity(shareIntent)
-            }
-
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
         })
 
+        // Redirect the user to the github repository page
         mainViewModel.item.observe(this, Observer {
             Toast.makeText(this, mainViewModel.item.value?.name, Toast.LENGTH_SHORT).show()
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(mainViewModel.item.value?.html_url))
             startActivity(browserIntent)
         })
 
-
+        // here we use navController to navigate between different screens
         setContent {
             GitTrackTheme {
 
@@ -80,55 +77,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun RepoListView(user: Repo){
-//LazyColumn(){
-//    items(user){ repo->
-//        UserItem(user = repo)
-//
-//    }
-//}
-
-    UserItem(repo = user)
-}
-
-@Composable
-fun UserItem(repo: Repo){
-
-    Row(
-        modifier = Modifier.padding(8.dp)
-    ) {
-        Box(modifier = Modifier
-            .size(50.dp)
-            .background(Color.White, CircleShape)
-        ){
-            Text(
-                modifier = Modifier.padding(10.dp),
-
-                text = repo.name.substring(0, 1),
-                color = Color.Red,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-            )
-        }
-    }
-
-    Column(modifier = Modifier.padding(start = 6.dp),
-    verticalArrangement = Arrangement.Center) {
-
-        Text(
-            text = repo.name,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
-
-        Spacer(modifier = Modifier.padding(top = 4.dp))
-        Text(
-            text = repo.description,
-            fontSize = 16.sp,
-            color = Color.White
-        )
-
-    }
-}

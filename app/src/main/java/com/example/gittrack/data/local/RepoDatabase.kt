@@ -9,20 +9,4 @@ abstract class RepoDatabase : RoomDatabase() {
 
     abstract fun repoDao() : RepoDao
 
-//    companion object{
-//        @Volatile
-//        private var INSTANCE: RepoDatabase? = null
-//
-//        fun getDatabase(context: Context): RepoDatabase{
-//            if (INSTANCE == null){
-//                synchronized(this){
-//                    INSTANCE = Room.databaseBuilder(context,
-//                    RepoDatabase::class.java,
-//                        "repoDB")
-//                        .build()
-//                }
-//            }
-//            return INSTANCE!!
-//        }
-//    }
 }

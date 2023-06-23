@@ -8,6 +8,7 @@ import com.example.gittrack.models.Repo
 @Dao
 interface RepoDao {
 
+    // Data Access Object interface for getting the data from local database
     @Insert
     suspend fun addRepo(repo: Repo)
 

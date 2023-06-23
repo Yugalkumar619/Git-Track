@@ -22,6 +22,7 @@ import javax.inject.Inject
 class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(){
 
 
+    // Here are the variables used for creating custom URL
      var ownerName: String = ""
      var repoName: String = ""
      var url: String = "/repos/"
@@ -44,7 +45,7 @@ class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(
     }
 
 
-    // function to call api for different repository
+    // function to call api to get different repository
     fun buttonClick(owner: MutableState<TextFieldValue>, repo: MutableState<TextFieldValue>){
 
         ownerName = owner.value.text
@@ -57,10 +58,12 @@ class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(
         }
     }
 
+    // function to redirect the user to github page of the repository
     fun itemClicked(item: Repo){
         this.item.postValue(item)
     }
 
+    // function to share the repository to other apps
     fun shareClicked(shareItem: Repo){
         this.shareItem.postValue(shareItem)
     }
