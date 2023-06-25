@@ -48,8 +48,8 @@ class MainVModel @Inject constructor(val repository: RepoRepository): ViewModel(
     // function to call api to get different repository
     fun buttonClick(owner: MutableState<TextFieldValue>, repo: MutableState<TextFieldValue>){
 
-        ownerName = owner.value.text
-        repoName = repo.value.text
+        ownerName = owner.value.text.trim()
+        repoName = repo.value.text.trim()
         url = "/repos/$ownerName/$repoName"
         Log.d("YUGALKUMAR", url)
 
